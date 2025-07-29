@@ -7,9 +7,14 @@ use Livewire\Volt\Volt;
 //     return view('welcome');
 // })->name('home');
 
+Route::view('/', 'pages.index')->name('home');
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::view('products', 'pages.product')->name('products');
+Route::view('about', 'pages.about')->name('about');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
