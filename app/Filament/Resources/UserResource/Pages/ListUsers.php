@@ -23,8 +23,8 @@ class ListUsers extends ListRecords
     {
         return [
             Tab::make('All Users'), // Tab 'all' tetap di sini
-            Tabs\Customers::class,
-            Tabs\Admins::class,
+            new Tabs\Customers(),
+            new Tabs\Admins(),
         ];
     }
 }

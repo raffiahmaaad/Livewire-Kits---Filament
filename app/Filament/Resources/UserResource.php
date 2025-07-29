@@ -36,14 +36,17 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+
                 TextInput::make('email')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+
                 Select::make('role')
                     ->options(UserRole::class)
                     ->required(),
+
                 TextInput::make('password')
                     ->password()
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
@@ -57,8 +60,11 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
+
                 TextColumn::make('name')->searchable(),
+
                 TextColumn::make('email')->searchable(),
+
                 BadgeColumn::make('role')
                     ->formatStateUsing(fn (UserRole $state): string => ucfirst($state->value))
                     ->color(fn (UserRole $state): string => match ($state) {
@@ -66,7 +72,9 @@ class UserResource extends Resource
                         UserRole::Customer => 'primary',
                     })
                     ->sortable(),
+
                 TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

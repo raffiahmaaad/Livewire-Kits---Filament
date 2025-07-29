@@ -14,13 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // Buat user Admin
-        User::factory()->create([
-            'name' => 'Super Admin',
-            'email' => 'admin@gmail.com',
-            'role' => UserRole::Admin, // <-- Atur rolenya menjadi Admin
+        $this->call([
+            AdminSeeder::class, // Jika Anda punya seeder user
+            ProductSeeder::class,
         ]);
     }
 }
