@@ -13,7 +13,8 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::view('products', 'pages.product')->name('products');
+Route::get('products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
+Route::get('products/{product:slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 Route::view('about', 'pages.about')->name('about');
 
 Route::middleware(['auth'])->group(function () {

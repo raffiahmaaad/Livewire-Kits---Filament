@@ -8,7 +8,7 @@
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         @include('components.navbar')
-        <main class="pt-20">
+        <main>
             {{ $slot ?? '' }}
         </main>
     </div>

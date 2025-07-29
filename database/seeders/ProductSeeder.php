@@ -2,51 +2,80 @@
 
 namespace Database\Seeders;
 
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        // Buat beberapa kategori
-        $category1 = Category::create(['name' => 'Running', 'slug' => 'running']);
-        $category2 = Category::create(['name' => 'Sneakers', 'slug' => 'sneakers']);
-
-        // Buat beberapa merek
-        $brand1 = Brand::create(['name' => 'Nike', 'slug' => 'nike']);
-        $brand2 = Brand::create(['name' => 'Adidas', 'slug' => 'adidas']);
-
-        // Buat beberapa produk
-        Product::create([
-            'name' => 'Nike Air Max 270',
-            'slug' => 'nike-air-max-270',
-            'description' => 'Sepatu lari dengan bantalan udara maksimal.',
-            'price' => 2200000,
-            'category_id' => $category1->id,
-            'brand_id' => $brand1->id,
-            'is_featured' => true,
+        // Create categories if they don't exist
+        $runningCategory = Category::firstOrCreate([
+            'name' => 'Running',
+            'slug' => 'running'
         ]);
 
-        Product::create([
-            'name' => 'Adidas Ultraboost',
-            'slug' => 'adidas-ultraboost',
-            'description' => 'Kenyamanan dan responsivitas terbaik untuk lari.',
-            'price' => 2800000,
-            'category_id' => $category1->id,
-            'brand_id' => $brand2->id,
+        $sneakersCategory = Category::firstOrCreate([
+            'name' => 'Sneakers',
+            'slug' => 'sneakers'
         ]);
 
-        Product::create([
-            'name' => 'Nike Court Vision',
-            'slug' => 'nike-court-vision',
-            'description' => 'Gaya klasik lapangan basket untuk sehari-hari.',
-            'price' => 950000,
-            'category_id' => $category2->id,
-            'brand_id' => $brand1->id,
-            'is_featured' => true,
+        // Create brands if they don't exist
+        $nikeBrand = Brand::firstOrCreate([
+            'name' => 'Nike',
+            'slug' => 'nike'
         ]);
+
+        $adidasBrand = Brand::firstOrCreate([
+            'name' => 'Adidas',
+            'slug' => 'adidas'
+        ]);
+
+        // Create products based on admin dashboard data
+        $products = [
+            [
+                'name' => 'Nike Air Max 270',
+                'slug' => 'nike-air-max-270',
+                'description' => 'Sepatu running premium dengan teknologi Air Max yang memberikan kenyamanan maksimal untuk aktivitas sehari-hari. Desain modern dengan bantalan udara yang responsif.',
+                'price' => 2200000.00,
+                'category_id' => $runningCategory->id,
+                'brand_id' => $nikeBrand->id,
+                'is_featured' => true,
+                'thumbnail' => null,
+            ],
+            [
+                'name' => 'Adidas Ultraboost',
+                'slug' => 'adidas-ultraboost',
+                'description' => 'Sepatu running dengan teknologi Boost yang memberikan energi kembali di setiap langkah. Cocok untuk pelari yang mencari performa tinggi dan kenyamanan.',
+                'price' => 2800000.00,
+                'category_id' => $runningCategory->id,
+                'brand_id' => $adidasBrand->id,
+                'is_featured' => false,
+                'thumbnail' => null,
+            ],
+            [
+                'name' => 'Nike Court Vision',
+                'slug' => 'nike-court-vision',
+                'description' => 'Sepatu sneakers casual dengan desain klasik yang terinspirasi dari sepatu basket vintage. Perfect untuk gaya kasual sehari-hari.',
+                'price' => 950000.00,
+                'category_id' => $sneakersCategory->id,
+                'brand_id' => $nikeBrand->id,
+                'is_featured' => true,
+                'thumbnail' => null,
+            ],
+        ];
+
+        foreach ($products as $productData) {
+            Product::updateOrCreate(
+                ['slug' => $productData['slug']],
+                $productData
+            );
+        }
     }
 }
